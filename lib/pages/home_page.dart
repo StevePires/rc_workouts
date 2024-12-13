@@ -45,6 +45,11 @@ class _HomePageState extends State<HomePage> {
                   icon: Icons.military_tech,
                   routeName: MainRoutes.sallyUp,
                 ),
+                HomeCard(
+                  title: 'My History',
+                  icon: Icons.calendar_today,
+                  routeName: MainRoutes.calendar,
+                ),
               ],
             ),
           ),

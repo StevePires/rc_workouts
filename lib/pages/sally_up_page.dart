@@ -17,6 +17,7 @@ class _SallyUpPageState extends State<SallyUpPage> {
   late VideoPlayerController controller;
   late Future<void> initializeVideoPlayerFuture;
   bool isFullScreen = false;
+  int preVideoStartSeconds = 6;
 
   final GlobalKey<VideoPlayerControlsState> controlsKey =
       GlobalKey<VideoPlayerControlsState>();
@@ -87,23 +88,71 @@ class _SallyUpPageState extends State<SallyUpPage> {
     return Column(
       children: [
         Center(
-          child: AspectRatio(
-            aspectRatio: controller.value.aspectRatio,
-            child: Stack(
-              alignment: Alignment.bottomCenter,
-              children: [
-                GestureDetector(
-                  onTap: toggleControlsVisibility,
-                  child: VideoPlayer(controller),
+          child: Column(
+            children: [
+              SizedBox(
+                height: (controller.value.size.height /
+                    controller.value.aspectRatio),
+                child: AspectRatio(
+                  aspectRatio: controller.value.aspectRatio,
+                  child: Stack(
+                    alignment: Alignment.bottomCenter,
+                    children: [
+                      GestureDetector(
+                        onTap: toggleControlsVisibility,
+                        child: VideoPlayer(controller),
+                      ),
+                      VideoProgressIndicator(controller, allowScrubbing: true),
+                      VideoPlayerControls(
+                          controller: controller, isFullScreen: isFullScreen),
+                    ],
+                  ),
                 ),
-                VideoProgressIndicator(controller, allowScrubbing: true),
-                VideoPlayerControls(
-                    controller: controller, isFullScreen: isFullScreen),
-              ],
-            ),
+              ),
+              SizedBox(height: 64),
+              Column(
+                children: [
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.red,
+                      foregroundColor: Colors.white,
+                    ),
+                    onPressed: isSaveable() ? addSallyUpToHistory : null,
+                    child: const Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          Icons.calendar_today,
+                          color: Colors.white,
+                        ),
+                        SizedBox(width: 8),
+                        Text('Add to History'),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ],
           ),
         ),
       ],
     );
+  }
+
+  bool isSaveable() {
+    return controller.value.position.inSeconds > preVideoStartSeconds;
+  }
+
+  void addSallyUpToHistory() {
+    Duration pausedAt = controller.value.position;
+    Duration workoutDuration =
+        pausedAt - Duration(seconds: preVideoStartSeconds);
+    workoutDuration = Duration(
+        seconds: workoutDuration.inSeconds +
+            (workoutDuration.inMilliseconds.remainder(1000) > 500 ? 1 : 0));
+
+    // TODO: Add workout to history
+    print(
+        "[SallyUpPage :: addSallUpToHistory] >>> Workout duration: $workoutDuration");
   }
 }

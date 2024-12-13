@@ -58,7 +58,6 @@ class VideoPlayerControlsState extends State<VideoPlayerControls> {
     hideControlsTimer?.cancel();
     hideControlsTimer = Timer(const Duration(seconds: 2), () {
       setState(() {
-        print("Hiding controls after the 2 seconds timer");
         areControlsVisible = false;
       });
     });
@@ -66,15 +65,11 @@ class VideoPlayerControlsState extends State<VideoPlayerControls> {
 
   void toggleControlsVisibility() {
     setState(() {
-      print('areControlsVisible: $areControlsVisible');
       areControlsVisible = !areControlsVisible;
-      print("Changed areControlsVisible to: $areControlsVisible");
 
       if (areControlsVisible) {
-        print("Starting hideControlsTimer");
         startHideControlsTimer();
       } else {
-        print("Cancelling hideControlsTimer");
         hideControlsTimer?.cancel();
       }
     });
@@ -91,7 +86,7 @@ class VideoPlayerControlsState extends State<VideoPlayerControls> {
             mainAxisSize: MainAxisSize.max,
             children: [
               Container(
-                color: Colors.black.withOpacity(0.33),
+                color: Colors.black.withValues(alpha: 0.33),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [

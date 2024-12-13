@@ -6,7 +6,7 @@ import 'package:rc_workouts/widgets/video_player_controls.dart';
 class SallyUpFsPage extends StatefulWidget {
   final VideoPlayerController controller;
 
-  const SallyUpFsPage({Key? key, required this.controller}) : super(key: key);
+  const SallyUpFsPage({super.key, required this.controller});
 
   @override
   State<SallyUpFsPage> createState() => _SallyUpFsPageState();
@@ -25,24 +25,38 @@ class _SallyUpFsPageState extends State<SallyUpFsPage> {
     });
   }
 
+  Future<bool> _onWillPop() async {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
+    Navigator.of(context).pop();
+    return false;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.black,
-      body: Center(
-        child: AspectRatio(
-          aspectRatio: widget.controller.value.aspectRatio,
-          child: Stack(
-            alignment: Alignment.bottomCenter,
-            children: [
-              GestureDetector(
-                onTap: toggleControlsVisibility,
-                child: VideoPlayer(widget.controller),
-              ),
-              VideoProgressIndicator(widget.controller, allowScrubbing: true),
-              VideoPlayerControls(
-                  controller: widget.controller, isFullScreen: true),
-            ],
+    return PopScope(
+      canPop: true,
+      onPopInvokedWithResult: (bool didPop, Object? result) async {
+        await _onWillPop();
+      },
+      child: Scaffold(
+        backgroundColor: Colors.black,
+        body: Center(
+          child: AspectRatio(
+            aspectRatio: widget.controller.value.aspectRatio,
+            child: Stack(
+              alignment: Alignment.bottomCenter,
+              children: [
+                GestureDetector(
+                  onTap: toggleControlsVisibility,
+                  child: VideoPlayer(widget.controller),
+                ),
+                VideoProgressIndicator(widget.controller, allowScrubbing: true),
+                VideoPlayerControls(
+                    controller: widget.controller, isFullScreen: true),
+              ],
+            ),
           ),
         ),
       ),
@@ -51,7 +65,7 @@ class _SallyUpFsPageState extends State<SallyUpFsPage> {
 
   buildVideoPlayerControls() {
     return Container(
-      color: Colors.black.withOpacity(0.25),
+      color: Colors.black.withValues(alpha: 0.4),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         mainAxisSize: MainAxisSize.min,
@@ -99,11 +113,8 @@ class _SallyUpFsPageState extends State<SallyUpFsPage> {
                 children: [
                   IconButton(
                     icon: const Icon(Icons.fullscreen_exit),
-                    onPressed: () {
-                      SystemChrome.setPreferredOrientations([
-                        DeviceOrientation.portraitUp,
-                      ]);
-                      Navigator.of(context).pop();
+                    onPressed: () async {
+                      await _onWillPop();
                     },
                   ),
                 ],

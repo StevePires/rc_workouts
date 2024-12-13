@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rc_workouts/widgets/my_app_bar.dart';
+import 'package:rc_workouts/widgets/workout_card.dart';
 
 class WorkoutsPage extends StatefulWidget {
   const WorkoutsPage({super.key});
@@ -46,31 +47,19 @@ class _WorkoutsPageState extends State<WorkoutsPage> {
   }
 
   List<Widget> getWorkouts() {
-    return <Widget>[
-      // const WorkoutCard(
-      //   title: 'Workout 1',
-      //   duration: Duration(minutes: 1),
-      // ),
-      // const SizedBox(height: 8),
-      // const WorkoutCard(
-      //   title: 'Workout 2',
-      //   duration: Duration(minutes: 1, seconds: 30),
-      // ),
-      // const SizedBox(height: 8),
-      // const WorkoutCard(
-      //   title: 'Workout 3',
-      //   duration: Duration(minutes: 2),
-      // ),
-      // const SizedBox(height: 8),
-      // const WorkoutCard(
-      //   title: 'Workout 4',
-      //   duration: Duration(minutes: 2, seconds: 30),
-      // ),
-      // const SizedBox(height: 8),
-      // const WorkoutCard(
-      //   title: 'Workout 5',
-      //   duration: Duration(minutes: 3),
-      // ),
+    const workoutList = [
+      'Squats',
+      'Push ups',
+      'Pull ups',
+      'Muscle Ups',
+      'Abs',
+      'Chin ups',
+      'Dips'
     ];
+    return List.from(workoutList).map((workout) {
+      return WorkoutCard(
+        title: workout,
+      );
+    }).toList();
   }
 }
