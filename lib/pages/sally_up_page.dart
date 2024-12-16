@@ -109,7 +109,7 @@ class _SallyUpPageState extends State<SallyUpPage> {
                   ),
                 ),
               ),
-              SizedBox(height: 64),
+              const SizedBox(height: 64),
               Column(
                 children: [
                   ElevatedButton(
@@ -154,5 +154,6 @@ class _SallyUpPageState extends State<SallyUpPage> {
     // TODO: Add workout to history
     print(
         "[SallyUpPage :: addSallUpToHistory] >>> Workout duration: $workoutDuration");
+
   }
 }

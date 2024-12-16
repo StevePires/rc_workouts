@@ -86,7 +86,7 @@ class VideoPlayerControlsState extends State<VideoPlayerControls> {
             mainAxisSize: MainAxisSize.max,
             children: [
               Container(
-                color: Colors.black.withValues(alpha: 0.33),
+                color: Colors.black.withOpacity(0.33),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [

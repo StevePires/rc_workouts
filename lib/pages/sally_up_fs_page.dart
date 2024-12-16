@@ -25,21 +25,19 @@ class _SallyUpFsPageState extends State<SallyUpFsPage> {
     });
   }
 
-  Future<bool> _onWillPop() async {
+  bool _onWillPop() {
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
     ]);
     Navigator.of(context).pop();
-    return false;
+    return true;
   }
 
   @override
   Widget build(BuildContext context) {
     return PopScope(
       canPop: true,
-      onPopInvokedWithResult: (bool didPop, Object? result) async {
-        await _onWillPop();
-      },
+      onPopInvoked: (didPop) => _onWillPop,
       child: Scaffold(
         backgroundColor: Colors.black,
         body: Center(
@@ -65,7 +63,7 @@ class _SallyUpFsPageState extends State<SallyUpFsPage> {
 
   buildVideoPlayerControls() {
     return Container(
-      color: Colors.black.withValues(alpha: 0.4),
+      color: Colors.black.withOpacity(0.4),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         mainAxisSize: MainAxisSize.min,
@@ -113,9 +111,7 @@ class _SallyUpFsPageState extends State<SallyUpFsPage> {
                 children: [
                   IconButton(
                     icon: const Icon(Icons.fullscreen_exit),
-                    onPressed: () async {
-                      await _onWillPop();
-                    },
+                    onPressed: () => _onWillPop,
                   ),
                 ],
               ),
